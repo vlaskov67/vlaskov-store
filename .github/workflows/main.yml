@@ -19,4 +19,4 @@ jobs:
           username: vlaskov67
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
-          server-dir: /home4/kaevtwmy/public_html/website_471ce401/
+          server-dir: /home4/kaevtwmy/public_html/website_471ce401
