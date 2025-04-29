@@ -1,4 +1,4 @@
-name: Deploy to Bluehost via SFTP
+name: Deploy to Bluehost via SSH
 
 on:
   push:
@@ -12,11 +12,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy via SFTP
+      - name: Deploy via SSH (SFTP)
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: kae.vtw.mybluehost.me
           username: vlaskov67
-          password: ${{ secrets.FTP_PASSWORD }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           local_path: './*'
           remote_path: '/home4/kaevtwmy/public_html/website_471ce401/'
