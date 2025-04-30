@@ -4,10 +4,7 @@
 /storage/*.key
 .env
 .phpunit.result.cache
-Homestead.json
-Homestead.yaml
-npm-debug.log
-yarn-error.log
-/.idea
-/.vscode
-/.phpunit.result.cache
+/storage/logs
+/storage/framework/cache/data
+/storage/framework/sessions
+/storage/framework/views

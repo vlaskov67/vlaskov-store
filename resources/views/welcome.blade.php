@@ -1,10 +1,16 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="container mx-auto py-8">
-    <h1 class="text-3xl font-bold mb-4">Добро пожаловать в Laravel Shop!</h1>
-    <p class="mb-6">Это главная страница вашего интернет-магазина на Laravel, Livewire и Alpine.js.</p>
-    <!-- Здесь может быть ваш Livewire компонент -->
-    @livewire('some-homepage-component')
-</div>
-@endsection
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интернет-магазин</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+</head>
+<body class="antialiased">
+    <div class="min-h-screen flex items-center justify-center bg-gray-100">
+        <h1 class="text-3xl font-bold">Добро пожаловать в интернет-магазин!</h1>
+    </div>
+    @livewireScripts
+</body>
+</html>
