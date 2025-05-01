@@ -1,0 +1,33 @@
+{
+    "name": "Laravel Codespace",
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "bmewburn.vscode-intelephense-client",
+          "felixfbecker.php-debug",
+          "esbenp.prettier-vscode",
+          "ms-azuretools.vscode-docker",
+          "octref.vetur"
+        ]
+      }
+    },
+    "features": {
+      "ghcr.io/devcontainers/features/php": {
+        "version": "8.2"
+      },
+      "ghcr.io/devcontainers/features/composer": {},
+      "ghcr.io/devcontainers/features/node": {
+        "version": "18"
+      },
+      "ghcr.io/devcontainers/features/mysql-client": {
+        "version": "8.0"
+      }
+    },
+    "forwardPorts": [8000],
+    "postCreateCommand": "composer install && npm install",
+    "remoteUser": "codespace"
+  }
+  
