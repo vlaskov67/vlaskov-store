@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vlaskov.ch - Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-white font-roboto">
+    <!-- Header -->
+    <header class="bg-white shadow-md p-4 flex justify-between items-center">
+        <div class="text-2xl font-bold font-montserrat text-black">Vlaskov</div>
+        <div class="flex items-center space-x-4">
+            <select class="border border-gray-300 rounded-lg p-2 focus:border-green-500">
+                <option>EN</option>
+                <option>DE</option>
+                <option>FR</option>
+                <option>IT</option>
+                <option>RU</option>
+            </select>
+            <input type="text" id="search" placeholder="Search..." class="border border-gray-300 rounded-lg p-2 focus:border-green-500">
+            <div class="flex space-x-2">
+                <button id="cart-toggle" class="focus:outline-none">
+                    <svg class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20a2 2 0 100-4 2 2 0 000 4zm8 0a2 2 0 100-4 2 2 0 000 4zM5 4h14l-1.5 8H6.5L5 4zm-1-2a1 1 0 011-1h16a1 1 0 011 1v1H4V2z"/></svg>
+                </button>
+                <a href="/track"><svg class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-9 5h6v2H3v2h2a10 10 0 0018 0h2V9h-6V7h6A10 10 0 0012 2zm0 14a4 4 0 110-8 4 4 0 010 8z"/></svg></a>
+                <a href="/wishlist"><svg class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></a>
+                <a href="/profile"><svg class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white/30 backdrop-blur-md rounded-lg p-4 w-80 animate-fade-in duration-300">
+            <h2 class="text-xl font-montserrat font-bold mb-4">Cart</h2>
+            {% if cart %}
+                {% for item in cart %}
+                <div class="flex justify-between items-center mb-2">
+                    <div>
+                        <p class="text-gray-700">{{ item.name }}</p>
+                        <p class="text-gray-600">CHF {{ item.price }} x {{ item.quantity }}</p>
+                    </div>
+                    <form action="{{ url_for('remove_from_cart', product_id=item.id) }}" method="POST">
+                        <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition">Remove</button>
+                    </form>
+                </div>
+                {% endfor %}
+                <div class="mt-4">
+                    <input type="text" id="promo-code" placeholder="Promo Code" class="border border-gray-300 rounded-lg p-2 w-full focus:border-green-500">
+                    <button id="apply-promo" class="bg-white shadow-md rounded-lg p-2 mt-2 w-full hover:bg-green-500 hover:text-white transition duration-300">Apply Promo</button>
+                </div>
+                <a href="{{ url_for('checkout') }}" class="block bg-white shadow-md rounded-lg p-2 mt-4 text-center hover:bg-green-500 hover:text-white transition duration-300">Proceed to Checkout</a>
+            {% else %}
+                <p class="text-gray-700">Your cart is empty.</p>
+            {% endif %}
+            <button id="cart-close" class="mt-4 text-gray-700 hover:text-red-500">Close</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="bg-green-500 text-white p-2 rounded-lg fixed bottom-4 right-4 hidden animate-fade-in duration-300">
+        Item added to cart!
+    </div>
+
+    <!-- Main Content -->
+    <section class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-montserrat font-bold mb-4">Cart</h2>
+        <p class="text-gray-700">Click the cart icon to view your cart.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-4 grid grid-cols-4 gap-4">
+        <div>
+            <h3 class="font-montserrat font-bold">About Vlaskov</h3>
+            <p>Swiss online store for tech accessories.</p>
+        </div>
+        <div>
+            <h3 class="font-montserrat font-bold">Support</h3>
+            <a href="/faq" class="block hover:text-green-500">FAQ</a>
+            <a href="/delivery" class="block hover:text-green-500">Delivery</a>
+            <a href="/returns" class="block hover:text-green-500">Returns</a>
+        </div>
+        <div>
+            <h3 class="font-montserrat font-bold">Links</h3>
+            <a href="/profile" class="block hover:text-green-500">Profile</a>
+            <a href="/wishlist" class="block hover:text-green-500">Wishlist</a>
+            <a href="/cart" class="block hover:text-green-500">Cart</a>
+        </div>
+        <div>
+            <h3 class="font-montserrat font-bold">Contact</h3>
+            <p>Email: support@vlaskov.ch</p>
+            <p>Phone: +41 123 456 789</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/live-search.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+</body>
+</html>
